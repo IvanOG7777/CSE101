@@ -106,10 +106,6 @@ int getSource(Graph G) {
     return G->source;
 }
 
-// getParent
-// Returns the parent of vertex u in the most recently constructed BFS tree
-// or returns NIL if BFS() has not yet been called.
-// Pre: 1 <= u <= getOrder(G)
 int getParent(Graph G, int u) {
     if (G == NULL) {
         fprintf(stderr, "Graph Error: getParent(): NULL Graph reference\n");
@@ -178,10 +174,14 @@ void getPath(List L, Graph G, int u) {
     }
 
     if (u == getSource(G)) {
+        append(L, u);
         return;
     }
-
-    append(L, u);
+    if (getParent(G, u) == NIL) {
+        return;
+    }
+        getPath(L, G, getParent(G, u));
+        append(L, u);
 }
 
 // makeNull()
@@ -191,11 +191,23 @@ void makeNull(Graph G) {
         fprintf(stderr, "Graph Error: makeNull(): NULL Graph reference \n");
         exit(EXIT_FAILURE);
     }
+
+    for (int i = 1; i <= getOrder(G); i++) {
+        freeList(&G->adj[i]);
+    }
+
+    G->numEdges = 0;
+    G->numArcs = 0;
+    G->source = NIL;
+
+    for (int i = 1; i <= getOrder(G); i++) {
+        G->adj[i] = newList();
+        G->color[i] = 0;
+        G->parent[i] = NIL;
+        G->dist[i] = INF;
+    }
 }
 
-// addEdge()
-// Creates an undirected edge joining vertex u to vertex v.
-// Pre: 1 <= u <= getOrder(G), 1 <= v <= getOrder(G)
 void addEdge(Graph G, int u, int v) {
     if (G == NULL) {
         fprintf(stderr, "Graph Error: addEdge(): NULL Graph reference \n");
@@ -213,10 +225,37 @@ void addEdge(Graph G, int u, int v) {
     }
 
     append(G->adj[u], v);
+    append(G->adj[v], u);
+    G->numEdges++;
+}
 
-    moveFront(G->adj[u]);
-    while (position(G->adj[u]) >= 0) {
-        printf("%d\n", get(G->adj[u]));
-        moveNext(G->adj[u]);
+void addArc(Graph G, int u, int v) {
+    if (G == NULL) {
+        fprintf(stderr, "Graph Error: addArc(): NULL Graph reference \n");
+        exit(EXIT_FAILURE);
     }
+
+    if (u <= 0 || v <= 0) {
+        fprintf(stderr, "Graph Error: addArc(): Invalid index U or V is too How \n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (u > getOrder(G) || v > getOrder(G)) {
+        fprintf(stderr, "Graph Error: addArc(): Invalid index U or V is too High \n");
+        exit(EXIT_FAILURE);
+    }
+    append(G->adj[u], v);
+    G->numArcs++;
+}
+
+// BFS()
+// Runs the Breadth First Search algorithm on G with source vertex s.
+void BFS(Graph G, int s) {
+    if (G == NULL) {
+        fprintf(stderr, "Graph Error: BFS(): NULL Graph reference \n");
+        exit(EXIT_FAILURE);
+    }
+
+
+
 }

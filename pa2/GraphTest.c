@@ -14,10 +14,19 @@ int main(void) {
     printf("\n\n");
 
     addEdge(G, 1, 2);
-    printf("\n");
     addEdge(G, 1, 3);
-    printf("\n");
     addEdge(G, 1, 4);
+    addEdge(G, 1, 5);
+    addEdge(G, 1, 6);
+
+    List L = newList();
+
+    getPath(L, G, 6);
+
+    moveFront(L);
+    while (position(L) >= 0) {
+        printf("%d\n", get(L));
+    }
 
     freeGraph(&G);
     return 0;
