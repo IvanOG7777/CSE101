@@ -152,3 +152,29 @@ int getDist(Graph G, int u) {
     return G->dist[u];
 }
 
+// getPath()
+// If vertex u is reachable from the source, appends the vertices of a shortest
+// source-u path to List L. Otherwise, appends NIL to L.
+// Pre: 1 <= u <= getOrder(G), getSource(G) != NIL
+void getPath(List L, Graph G, int u) {
+    if (L == NULL) {
+        fprintf(stderr, "Graph Error: getPath(): NULL List Reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (G == NULL) {
+        fprintf(stderr, "Graph Error: getPath(): NULL Graph Reference\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (u <= 0) {
+        fprintf(stderr, "Graph Error: getPath(): Invalid index (Too low)\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (u > getOrder(G)) {
+        fprintf(stderr, "Graph Error: getPath(): Invalid index (Too High)\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
