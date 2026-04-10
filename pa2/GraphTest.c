@@ -11,7 +11,13 @@ int main(void) {
     printf("Current source is: %d\n", getSource(G));
     printf("Current parent id: %d\n", getParent(G, 2));
     printf("Current parent id: %d\n", getDist(G, 2));
+    printf("\n\n");
 
+    addEdge(G, 1, 2);
+    printf("\n");
+    addEdge(G, 1, 3);
+    printf("\n");
+    addEdge(G, 1, 4);
 
     freeGraph(&G);
     return 0;

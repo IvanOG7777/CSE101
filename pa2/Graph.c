@@ -176,5 +176,47 @@ void getPath(List L, Graph G, int u) {
         fprintf(stderr, "Graph Error: getPath(): Invalid index (Too High)\n");
         exit(EXIT_FAILURE);
     }
+
+    if (u == getSource(G)) {
+        return;
+    }
+
+    append(L, u);
 }
 
+// makeNull()
+// Resets G to its initial state.
+void makeNull(Graph G) {
+    if (G == NULL) {
+        fprintf(stderr, "Graph Error: makeNull(): NULL Graph reference \n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+// addEdge()
+// Creates an undirected edge joining vertex u to vertex v.
+// Pre: 1 <= u <= getOrder(G), 1 <= v <= getOrder(G)
+void addEdge(Graph G, int u, int v) {
+    if (G == NULL) {
+        fprintf(stderr, "Graph Error: addEdge(): NULL Graph reference \n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (u <= 0 || v <= 0) {
+        fprintf(stderr, "Graph Error: addEdge(): Invalid index U or V is too How \n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (u > getOrder(G) || v > getOrder(G)) {
+        fprintf(stderr, "Graph Error: addEdge(): Invalid index U or V is too High \n");
+        exit(EXIT_FAILURE);
+    }
+
+    append(G->adj[u], v);
+
+    moveFront(G->adj[u]);
+    while (position(G->adj[u]) >= 0) {
+        printf("%d\n", get(G->adj[u]));
+        moveNext(G->adj[u]);
+    }
+}
